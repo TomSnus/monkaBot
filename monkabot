@@ -1,6 +1,7 @@
 import cfg
 import re
 import socket
+import Command
 from time import sleep, time
 
 
@@ -24,9 +25,17 @@ def ban(sock, user):
 def timeout(sock, user, seconds=600):
     chat(sock, ".timeout {}".format(user, seconds))
 
+def initCommands():
+    commands = {
+        "!time": "its time",
+        "!test": "test"
+        #Add Commands Here
+    }
+    return commands
 
 
 def main():
+    cmd = initCommands()
     # Networking functions
     s = socket.socket()
     s.connect((cfg.HOST, cfg.PORT))
@@ -48,9 +57,9 @@ def main():
             message = CHAT_MSG.sub("", response)
 
             print(username + " : " + message)
-
-            if(message.strip() == "!time"):
-                chat(s, "its time")
+            for com, resp in cmd.items():
+                if(message.strip() == com):
+                    chat(s, resp)
         sleep(1)
     chat(s, "Bye everyone :)");
 if __name__ == "__main__":
