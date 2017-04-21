@@ -2,6 +2,8 @@ import cfg
 import re
 import socket
 import Command
+import requests
+import json
 from time import sleep, time
 
 
@@ -28,7 +30,8 @@ def timeout(sock, user, seconds=600):
 def initCommands():
     commands = {
         "!time": "its time",
-        "!test": "test"
+        "!test": "test",
+        "!followage": requests.get("http://mcgamesdot.net/followage.php?channel=marckotobeloo&user=").text
         #Add Commands Here
     }
     return commands
@@ -59,7 +62,7 @@ def main():
             print(username + " : " + message)
             for com, resp in cmd.items():
                 if(message.strip() == com):
-                    chat(s, resp)
+                    chat(s, resp+username.strip())
         sleep(1)
     chat(s, "Bye everyone :)");
 if __name__ == "__main__":
